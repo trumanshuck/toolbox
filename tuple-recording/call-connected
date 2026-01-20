@@ -1,22 +1,10 @@
 #!/bin/bash
-# Start MacWhisper recording when Tuple call connects
+# Remind to start MacWhisper recording when Tuple call connects
 # Tuple trigger: call-connected
 
-# Menu item name - update this after running discover-menu-items
-MENU_ITEM="Start Recording"
+CALLER="${TUPLE_TRIGGER_FULL_NAME:-someone}"
 
-osascript <<EOF
-tell application "System Events"
-    if not (exists process "MacWhisper") then
-        return "MacWhisper not running"
-    end if
+osascript -e "display notification \"Start recording for call with $CALLER\" with title \"Tuple Call Started\""
+open -a MacWhisper
 
-    tell process "MacWhisper"
-        click menu bar item 1 of menu bar 2
-        delay 0.3
-        click menu item "$MENU_ITEM" of menu 1 of menu bar item 1 of menu bar 2
-    end tell
-end tell
-EOF
-
-echo "$(date): Started MacWhisper recording for call with ${TUPLE_TRIGGER_FULL_NAME:-unknown}" >> ~/.tuple/triggers/triggers.log
+echo "$(date): Tuple call started with $CALLER" >> ~/.tuple/triggers/triggers.log
