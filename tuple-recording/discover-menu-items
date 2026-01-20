@@ -1,0 +1,37 @@
+#!/bin/bash
+# Discover MacWhisper's menubar menu item names
+# Run this script to find the exact names for Start/Stop Recording
+
+echo "Discovering MacWhisper menu items..."
+echo "Make sure MacWhisper is running with its menubar icon visible."
+echo ""
+
+osascript <<'EOF'
+tell application "System Events"
+    if not (exists process "MacWhisper") then
+        return "ERROR: MacWhisper is not running. Please start it first."
+    end if
+
+    tell process "MacWhisper"
+        try
+            -- Click to open the menu
+            click menu bar item 1 of menu bar 2
+            delay 0.3
+
+            -- Get all menu item names
+            set menuItems to name of every menu item of menu 1 of menu bar item 1 of menu bar 2
+
+            -- Close the menu by pressing Escape
+            key code 53
+
+            return menuItems
+        on error errMsg
+            key code 53 -- Close menu if open
+            return "ERROR: " & errMsg
+        end try
+    end tell
+end tell
+EOF
+
+echo ""
+echo "Update call-connected and call-ended scripts with the exact menu item names above."

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:json-render.dev)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install:*)",
+      "Bash(npm search json-render)",
+      "Bash(npm view:*)",
+      "Bash(node -e:*)",
+      "Bash(pkill:*)"
+    ]
+  }
+}

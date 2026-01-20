@@ -1,0 +1,22 @@
+#!/bin/bash
+# Stop MacWhisper recording when Tuple call ends
+# Tuple trigger: call-ended
+
+# Menu item name - update this after running discover-menu-items
+MENU_ITEM="Stop Recording"
+
+osascript <<EOF
+tell application "System Events"
+    if not (exists process "MacWhisper") then
+        return "MacWhisper not running"
+    end if
+
+    tell process "MacWhisper"
+        click menu bar item 1 of menu bar 2
+        delay 0.3
+        click menu item "$MENU_ITEM" of menu 1 of menu bar item 1 of menu bar 2
+    end tell
+end tell
+EOF
+
+echo "$(date): Stopped MacWhisper recording for call with ${TUPLE_TRIGGER_FULL_NAME:-unknown}" >> ~/.tuple/triggers/triggers.log
