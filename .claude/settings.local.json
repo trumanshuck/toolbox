@@ -8,7 +8,9 @@
       "Bash(npm search json-render)",
       "Bash(npm view:*)",
       "Bash(node -e:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(chmod:*)",
+      "Bash(ssh:*)"
     ]
   }
 }

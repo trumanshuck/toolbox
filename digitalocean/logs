@@ -1,0 +1,31 @@
+#!/bin/bash
+# Check logs on the droplet (Dokku apps or system logs)
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config"
+
+DOKKU_APPS="community lakehouse"
+
+if [ -z "$1" ]; then
+    echo "Usage: ./logs <app|service|path>"
+    echo ""
+    echo "Dokku apps: $DOKKU_APPS"
+    echo ""
+    echo "Examples:"
+    echo "  ./logs community       # tail dokku app logs"
+    echo "  ./logs lakehouse       # tail dokku app logs"
+    echo "  ./logs nginx           # tail system service"
+    echo "  ./logs /var/log/syslog # tail specific file"
+    exit 0
+fi
+
+# Check if it's a Dokku app
+if echo "$DOKKU_APPS" | grep -qw "$1"; then
+    ssh -t "$HOST" "dokku logs $1 -t"
+# Check if it's a file path
+elif [[ "$1" == /* ]]; then
+    ssh "$HOST" "tail -n 100 -f $1"
+# Otherwise treat as systemd service
+else
+    ssh "$HOST" "journalctl -u $1 -n 100 -f"
+fi
