@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config"
+
+# --- SSH multiplexing ---
+CONTROL_PATH="/tmp/torrent-sync-ssh-%r@%h:%p"
+
+remote() {
+    ssh -p "$SSH_PORT" \
+        -o ControlMaster=auto \
+        -o ControlPath="$CONTROL_PATH" \
+        -o ControlPersist=60 \
+        "$HOST" "$@"
+}
+
+remote_scp_to() {
+    scp -P "$SSH_PORT" \
+        -o ControlPath="$CONTROL_PATH" \
+        "$1" "$HOST:$2"
+}
+
+remote_scp_from() {
+    scp -r -P "$SSH_PORT" \
+        -o ControlPath="$CONTROL_PATH" \
+        "$HOST:$1" "$2"
+}
+
+# --- Validate input ---
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $(basename "$0") <path-to-.torrent-file>" >&2
+    exit 1
+fi
+
+TORRENT_FILE="$1"
+
+if [[ ! -f "$TORRENT_FILE" ]]; then
+    echo "Error: file not found: $TORRENT_FILE" >&2
+    exit 1
+fi
+
+if [[ "$TORRENT_FILE" != *.torrent ]]; then
+    echo "Error: file must have a .torrent extension" >&2
+    exit 1
+fi
+
+TORRENT_BASENAME="$(basename "$TORRENT_FILE")"
+SAFE_BASENAME="${TORRENT_BASENAME// /_}"
+
+# --- Verify remote ---
+echo "Verifying remote host..."
+
+if ! remote "command -v deluge-console" &>/dev/null; then
+    echo "Error: deluge-console is not installed on $HOST" >&2
+    echo "Install it with: sudo apt install deluge-console" >&2
+    exit 1
+fi
+
+if ! remote "pgrep -x deluged" &>/dev/null; then
+    echo "Error: deluged is not running on $HOST" >&2
+    echo "Start it with: deluged" >&2
+    exit 1
+fi
+
+echo "Remote OK."
+
+# --- Upload torrent file ---
+TIMESTAMP="$(date +%s)"
+REMOTE_TORRENT="/tmp/torrent-sync-${TIMESTAMP}-${SAFE_BASENAME}"
+
+cleanup() {
+    echo ""
+    echo "Cleaning up remote temp file..."
+    remote "rm -f \"$REMOTE_TORRENT\"" 2>/dev/null || true
+}
+trap cleanup EXIT
+
+echo "Uploading $TORRENT_BASENAME to remote..."
+remote_scp_to "$TORRENT_FILE" "$REMOTE_TORRENT"
+
+# --- Add to Deluge ---
+# Capture existing hashes before adding so we can diff to find the new one
+BEFORE_HASHES="$(remote "deluge-console info" | grep -oE '[a-f0-9]{40}' || true)"
+
+echo "Adding torrent to Deluge..."
+ADD_OUTPUT="$(remote "deluge-console add \"$REMOTE_TORRENT\"" 2>&1)" || true
+echo "$ADD_OUTPUT"
+
+# --- Get torrent hash ---
+HASH=""
+
+# Check for "already in session" — hash is in the error message
+if echo "$ADD_OUTPUT" | grep -qi "already in session"; then
+    HASH="$(echo "$ADD_OUTPUT" | grep -oE 'already in session \([a-f0-9]{40}\)' | grep -oE '[a-f0-9]{40}' | head -1)"
+    echo "Torrent already in Deluge."
+elif echo "$ADD_OUTPUT" | grep -qi "torrent added"; then
+    echo "Looking up torrent hash..."
+    sleep 2  # give Deluge a moment to register the torrent
+
+    AFTER_HASHES="$(remote "deluge-console info" | grep -oE '[a-f0-9]{40}' || true)"
+
+    # Find the new hash by diffing before/after
+    while IFS= read -r hash; do
+        [[ -z "$hash" ]] && continue
+        if ! echo "$BEFORE_HASHES" | grep -qxF "$hash"; then
+            HASH="$hash"
+            break
+        fi
+    done <<< "$AFTER_HASHES"
+else
+    echo "Error: failed to add torrent to Deluge" >&2
+    exit 1
+fi
+
+if [[ -z "$HASH" ]]; then
+    echo "Error: could not determine torrent hash." >&2
+    exit 1
+fi
+
+echo "Torrent hash: $HASH"
+
+# --- Poll for completion ---
+echo "Waiting for download to complete..."
+
+# Parse compact deluge-console info output:
+#   [S]   100% Torrent Name abcdef1234567890abcdef1234567890abcdef12
+#       DL: ... UL: ... ETA: ...
+# State codes: S=Seeding, D=Downloading, P=Paused, E=Error, C=Checking, Q=Queued
+parse_deluge_line() {
+    local line="$1"
+    P_STATE="" P_PROGRESS="" P_NAME=""
+    if [[ "$line" =~ ^\[([A-Z])\][[:space:]]+([0-9.]+)%[[:space:]]+(.*)[[:space:]][a-f0-9]{40}$ ]]; then
+        local code="${BASH_REMATCH[1]}"
+        P_PROGRESS="${BASH_REMATCH[2]}"
+        P_NAME="${BASH_REMATCH[3]}"
+        case "$code" in
+            S) P_STATE="Seeding" ;;
+            D) P_STATE="Downloading" ;;
+            P) P_STATE="Paused" ;;
+            E) P_STATE="Error" ;;
+            C) P_STATE="Checking" ;;
+            Q) P_STATE="Queued" ;;
+            A) P_STATE="Allocating" ;;
+            *) P_STATE="Unknown ($code)" ;;
+        esac
+    fi
+}
+
+while true; do
+    POLL_OUTPUT="$(remote "deluge-console info $HASH")"
+
+    # Parse the status line (first line with our hash)
+    POLL_LINE="$(echo "$POLL_OUTPUT" | grep "$HASH" | head -1)"
+    parse_deluge_line "$POLL_LINE"
+
+    STATE="$P_STATE"
+    PROGRESS="$P_PROGRESS"
+    NAME="$P_NAME"
+
+    printf "\rState: %-12s Progress: %s%%" "$STATE" "${PROGRESS:-?}"
+
+    if [[ "$STATE" == "Seeding" ]] || [[ "${PROGRESS:-0}" == "100" || "${PROGRESS:-0}" == "100.00" ]]; then
+        echo ""
+        echo "Download complete!"
+        break
+    fi
+
+    if [[ "$STATE" == "Error" ]]; then
+        echo ""
+        echo "Error: torrent entered error state" >&2
+        echo "$POLL_OUTPUT" >&2
+        exit 1
+    fi
+
+    sleep "$POLL_INTERVAL"
+done
+
+# --- Fetch result ---
+echo "Downloading \"$NAME\" to $LOCAL_DOWNLOAD_DIR/ ..."
+mkdir -p "$LOCAL_DOWNLOAD_DIR"
+remote_scp_from "$REMOTE_DOWNLOAD_DIR/$NAME" "$LOCAL_DOWNLOAD_DIR/"
+
+echo "Done! Downloaded to: $LOCAL_DOWNLOAD_DIR/$NAME"
