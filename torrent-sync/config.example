@@ -1,0 +1,5 @@
+HOST=user@your-server.example.com
+SSH_PORT=22
+REMOTE_DOWNLOAD_DIR=/home/user/Downloads
+LOCAL_DOWNLOAD_DIR=$HOME/Downloads
+POLL_INTERVAL=10
