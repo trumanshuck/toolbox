@@ -1,0 +1,17 @@
+[Unit]
+Description=reMarkable quote rotation
+
+[Timer]
+# xochitl needs ~72s after each rotate to fully suspend (12s idle → light
+# sleep → 60s → deep sleep with image painted), so the interval must be
+# comfortably longer than that. Hourly fires at the top of each hour from
+# 7am to 10pm ET (DST handled by systemd via the zone). Outside that
+# window the timer is idle, so the tablet can stay in light sleep all
+# night. Use `OnCalendar=*:0/3` for fast testing.
+OnCalendar=*-*-* 07..22:00:00 America/New_York
+WakeSystem=true
+Persistent=true
+AccuracySec=15s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,14 @@
+There’s a thread you follow. It goes among
+things that change. But it doesn’t change.
+People wonder about what you are pursuing.
+You have to explain about the thread.
+But it is hard for others to see.
+While you hold it you can’t get lost.
+Tragedies happen; people get hurt
+or die; and you suffer and get old.
+Nothing you do can stop time’s unfolding.
+You don’t ever let go of the thread.
+
+---
+
+William Stafford
