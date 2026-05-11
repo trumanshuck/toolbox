@@ -1,0 +1,158 @@
+Desktop PC Resale Pricing Research
+====================================
+Data sources: eBay sold/completed listings + r/hardwareswap recent asks
+              + retail price trackers
+Date pulled:  April 21, 2026
+Previous pull: March 2, 2026
+
+
+1. NVIDIA GeForce RTX 4090 Founders Edition
+   Original paid: $2,459.00
+   Sold range:      $1,950 – $2,375 (pre-owned FE, Mar–Apr 2026)
+   Typical/median:  $2,100
+   r/hardwareswap:  17 asks, median $2,200, cluster $2,030–$2,375
+   Market delta:    -$359
+   Trend vs. March: DOWN ~5-10%
+   Notes: Softened modestly from Feb/Mar peak as panic buying cooled,
+          but FE still commands a premium over AIB (AIB pre-owned
+          ~$1,500–1,700). New retail still ~$2,755 and 5090 supply is
+          structurally constrained (memory crisis + AI demand), so the
+          4090 floor remains well above $1,599 MSRP. High liquidity —
+          dozens of weekly sales. List soon; trend is gradually down.
+
+2. AMD Ryzen 9 7950X3D
+   Original paid: $599.00
+   Sold range:      $350 – $400 (pre-owned, Apr 2026)
+   Typical/median:  $385
+   r/hardwareswap:  pre-owned cluster $360–$400; new/sealed $475–$530
+   Market delta:    -$214
+   Trend vs. March: FLAT to slightly DOWN (-$25)
+   Notes: New-in-box $475–$530. Pre-owned stable around $375–400. No
+          major catalyst. Easy, straightforward sale.
+
+3. CORSAIR Vengeance 64GB DDR5 6000 (CMK64GX5M2B6000C30)
+   Original paid: $209.99
+   Sold range:      $650 – $950 (used/open box, Apr 2026 — estimated)
+   Typical/median:  $800
+   Market delta:    +$590
+   Trend vs. March: UP significantly (+$300 on median)
+   Notes: DDR5 crisis escalated, did not ease. New retail now $1,070–
+          $1,120 (up from $550–$780 in March). Samsung doubled DRAM
+          contract prices in Dec 2025; Q2 2026 forecast another +30–50%.
+          64GB kits are the worst-hit segment. This is now the single
+          biggest $ upside in the build.
+          CAVEAT: hardwareswap comps for this exact SKU were sparse in
+          the latest pull. Price anchored to retail floor; actual
+          sell-through could be $700–$900. LIST NOW — any easing of
+          trade/tariff situation kills this premium fast.
+
+4. Crucial T700 1TB Gen5 NVMe (CT1000T700SSD3)
+   Original paid: $159.99
+   Sold range:      $160 – $230 (Apr 2026)
+   Typical/median:  $185
+   Market delta:    +$25
+   Trend vs. March: UP (+$35)
+   Notes: NAND pricing caught up with DRAM crisis. Gen5 drives now hard
+          to find new — some retailers at $295. Used finally commands a
+          small premium. Still niche demand, but easier sale than March.
+
+5. ASUS ROG Strix B650E-I Gaming WiFi
+   Original paid: $311.99
+   Sold range:      $150 – $215 (functional pre-owned, Apr 2026)
+   Typical/median:  $180
+   r/hardwareswap:  5 asks, median $185
+   Market delta:    -$132
+   Trend vs. March: FLAT (+$5)
+   Notes: New retail ~$223–$300. Niche mITX AM5 demand steady. No
+          change worth noting. Post on r/hardwareswap + eBay.
+
+6. CORSAIR SF850L SFX PSU
+   Original paid: $149.99
+   Sold range:      $95 – $165 (pre-owned, Feb–Apr 2026)
+   Typical/median:  $120
+   r/hardwareswap:  $110, $120
+   Market delta:    -$30
+   Trend vs. March: FLAT
+   Notes: Low volume, consistent pricing. ATX 3.0 / PCIe 5.0 still a
+          plus as 5000-series adoption grows. Easy sale, small ticket.
+
+7. Fractal Design Terra (Jade)
+   Original paid: $179.99
+   Sold range:      $120 – $200 (pre-owned/open box, Apr 2026)
+   Typical/median:  $150
+   Market delta:    -$30
+   Trend vs. March: FLAT (+$5)
+   Notes: New retail $199. Jade color less common than Graphite/Silver
+          — patient buyer finds a slight premium. PCIe 4.0 riser
+          included adds value. No change.
+
+8. ID-COOLING IS-55 + Noctua NF-A4x10 PWM
+   Original paid: $74.09 (combined)
+   Sold range:      $18 – $38 (IS-55 pre-owned, Feb–Apr 2026)
+   Typical/median:  $27
+   Market delta:    -$47
+   Trend vs. March: FLAT
+   Notes: Noctua 40mm fan $5–$10 separately. Bundle together at $30–$35,
+          price to move. Not worth optimizing.
+
+
+PART-OUT SUMMARY (April 21, 2026)
+=================================
+Component                     Paid        Est. Sale   Delta     vs Mar
+──────────────────────────────────────────────────────────────────────
+RTX 4090 FE                   $2,459      $2,100      -$359     -$400
+Ryzen 9 7950X3D               $599        $385        -$214     -$25
+Corsair 64GB DDR5 6000        $210        $800        +$590     +$300
+Crucial T700 1TB              $160        $185        +$25      +$35
+ASUS B650E-I Gaming WiFi      $312        $180        -$132     +$5
+Corsair SF850L                $150        $120        -$30       $0
+Fractal Terra (Jade)          $180        $150        -$30      +$5
+IS-55 + Noctua fan            $74         $27         -$47      +$2
+──────────────────────────────────────────────────────────────────────
+TOTAL                         $4,144      $3,947      -$197     -$78
+
+Expected part-out revenue:  ~$3,947
+vs. original cost:          ~$4,144
+Net position:               ~-$197 (95% cost recovery)
+
+
+WHAT CHANGED SINCE MARCH 2
+==========================
+- DDR5 crisis escalated, NOT eased. 64GB kits roughly doubled again at
+  retail. Samsung doubled contract DRAM in Dec 2025; forecasts point
+  to another +30–50% through Q2 2026.
+- RTX 4090 FE softened ~5–10% from Feb/Mar peak. Panic buying cooled
+  but 5090 supply still structurally tight (memory/AI demand), so the
+  floor remains well above MSRP. Hardwareswap asks still clustering
+  $2,030–$2,375 — not a collapse.
+- NAND caught up with DRAM — Gen5 SSDs now carry a small used premium.
+- CPU, mobo, PSU, case, cooler: essentially flat.
+
+Net: DDR5 gain (+$300) partially offsets 4090 softening (-$400). Total
+recovery is ~$78 lower than March; composition shifted more toward RAM.
+
+
+COMPLETE BUILD vs. PART-OUT
+===========================
+Same as March: complete build nets 10–15% less. Estimated complete-build
+sale: $3,350 – $3,650. Part-out remains the right call.
+
+
+REVISED SELLING PRIORITY
+========================
+1. DDR5 64GB kit   — NEW #1. Biggest $ upside and most volatile. Any
+                     easing of trade/tariff situation kills this premium.
+2. RTX 4090 FE     — Still high $ value but slowly softening. List next.
+3. Ryzen 9 7950X3D — Steady, easy sale.
+4. Crucial T700    — Now an easier sale thanks to NAND pricing.
+5. ASUS B650E-I    — Niche but steady.
+6. Corsair SF850L  — Easy, low value.
+7. Fractal Terra   — Patient buyer.
+8. IS-55 + Noctua  — Bundle, price low.
+
+
+RECOMMENDATION
+==============
+Still PART OUT. DDR5 kit + 4090 FE together = ~$2,900 of recovery.
+DDR5 upside is time-sensitive — list in the next 1–2 weeks. 4090 is
+softening but not cratering; list within a month.

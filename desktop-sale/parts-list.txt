@@ -1,0 +1,19 @@
+Desktop PC Parts List
+=====================
+
+Newegg Order #536565474 - 3/1/2024 (Sold by GH Electronics)
+  - NVIDIA GeForce RTX 4090 Founders Edition Graphics Card 24GB GDDR6X - Titanium and Black — $2,459.00
+
+Newegg Order #536565434 - 3/1/2024 (Sold by Newegg)
+  - Fractal Design Terra Jade Mini-ITX Small Form Factor PC Case with PCIe 4.0 Riser — $179.99
+  - CORSAIR SF850L Fully Modular Low-Noise SFX Power Supply - ATX 3.0 & PCIe 5.0 Compliant - Quiet 120mm PWM Fan - 80 PLUS — $149.99
+  - ASUS ROG Strix B650E-I Gaming WiFi AMD B650 AM5 Ryzen Desktop 9000 8000 & 7000 mini-ITX mITX motherboard, 10+2 power — $311.99
+  - AMD Ryzen 9 7950X3D - Ryzen 9 7000 Series Zen 4 16-Core 4.2 GHz - Socket AM5 120W - AMD Radeon Graphics Desktop — $599.00
+  - Crucial T700 GEN5 NMVE M.2 SSD 1TB PCI-Express 5.0 x4 TLC NAND² Internal Solid State Drive (SSD) CT1000T700SSD3 — $159.99
+  - CORSAIR Vengeance 64GB (2 x 32GB) 288-Pin PC RAM DDR5 6000 (PC5 48000) Desktop Memory Model CMK64GX5M2B6000C30 — $209.99
+
+Amazon Order - March 1, 2024 — $74.09
+  - ID-COOLING IS-55 Black Desktop CPU Cooler Low Profile 57mm Height CPU Air Cooler 5 Heatpipes 120x120x15mm Slim Fan, CPU Fan for Intel LGA1700/115X/1200, AMD AM4/AM5
+  - Noctua NF-A4x10 PWM, Premium Quiet Fan, 4-Pin (40x10mm, Brown)
+
+Total Paid: ~$4,144.05
