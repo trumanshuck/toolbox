@@ -1,0 +1,110 @@
+# Same 4 max-quality color variations, applied to ref-3.jpeg (alternate side
+# angle of the same mulch bed) so we can see how each treatment reads from a
+# slightly different perspective.
+
+source: ref-3.jpeg
+model: max
+
+variations:
+  - name: glacial-michigan-flagstone-ref3
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of FLAT IRREGULAR FLAGSTONE SLABS (not
+      rounded pebbles, not river rocks — flat thin natural stone slabs of
+      varying sizes and irregular shapes) in a varied Midwest glacial-stone
+      palette of warm greys, soft browns, buff tans, and occasional
+      rust-orange iron-oxide tones. Stones laid touching each other to fill
+      the bed interior as a continuous ground covering, hairline joints
+      filled with fine stone dust.
+
+      The new stone surface is CONTAINED STRICTLY INSIDE the planting bed
+      boundary. Its boundary is defined by the existing curved paver edging
+      on its perimeter and the deck stairs at its rear edge. The new stone
+      does NOT touch, cover, climb onto, or alter the deck stairs, the deck
+      platform, or the paver edging in any way. The wooden bottom step and
+      every wooden deck step remain unchanged wood. The existing curved
+      stacked-stone paver edging retains its original warm-grey
+      concrete-block color and shape, fully unaffected by the new stone.
+
+      Preserve everything else exactly: cable-rail deck with light-grey
+      composite decking, black chain-link fence, yellow steel raised
+      planters, multi-trunk shrub, daylilies and ornamental grasses, dark
+      navy siding. Match the existing daylight, perspective, and shadows.
+      Photorealistic.
+
+  - name: tennessee-mossy-flagstone-ref3
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of Tennessee fieldstone flagstone —
+      flat irregularly-shaped natural stone slabs in a mossy mixed palette
+      of olive-green, soft grey, weathered tan, and warm brown with subtle
+      natural lichen variation across the stone surfaces. Stones of varying
+      sizes laid touching each other to fill the bed interior as a
+      continuous ground covering, hairline joints filled with fine stone
+      dust.
+
+      The new stone surface is CONTAINED STRICTLY INSIDE the planting bed
+      boundary. Its boundary is defined by the existing curved paver edging
+      on its perimeter and the deck stairs at its rear edge. The new stone
+      does NOT touch, cover, climb onto, or alter the deck stairs, the deck
+      platform, or the paver edging in any way. The wooden bottom step and
+      every wooden deck step remain unchanged wood. The existing curved
+      stacked-stone paver edging retains its original warm-grey
+      concrete-block color and shape, fully unaffected by the new stone.
+
+      Preserve everything else exactly: cable-rail deck with light-grey
+      composite decking, black chain-link fence, yellow steel raised
+      planters, multi-trunk shrub, daylilies and ornamental grasses, dark
+      navy siding. Match the existing daylight, perspective, and shadows.
+      Photorealistic.
+
+  - name: charcoal-flagstone-ref3
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of charcoal-grey flagstone — flat
+      irregularly-shaped natural stone slabs in deep charcoal, slate-grey,
+      and near-black tones, a moody monochromatic palette. Stones of varying
+      sizes laid touching each other to fill the bed interior as a
+      continuous ground covering, hairline joints filled with fine stone
+      dust.
+
+      The new stone surface is CONTAINED STRICTLY INSIDE the planting bed
+      boundary. Its boundary is defined by the existing curved paver edging
+      on its perimeter and the deck stairs at its rear edge. The new stone
+      does NOT touch, cover, climb onto, or alter the deck stairs, the deck
+      platform, or the paver edging in any way. The wooden bottom step and
+      every wooden deck step remain unchanged wood. The existing curved
+      stacked-stone paver edging retains its original warm-grey
+      concrete-block color and shape, fully unaffected by the new stone
+      (the edging is NOT charcoal — it stays its original warm grey).
+
+      Preserve everything else exactly: cable-rail deck with light-grey
+      composite decking, black chain-link fence, yellow steel raised
+      planters, multi-trunk shrub, daylilies and ornamental grasses, dark
+      navy siding. Match the existing daylight, perspective, and shadows.
+      Photorealistic.
+
+  - name: red-sandstone-flagstone-ref3
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of red sandstone flagstone — flat
+      irregularly-shaped natural stone slabs in warm rust-red, terracotta,
+      cinnamon-brown, and weathered orange tones. Stones of varying sizes
+      laid touching each other to fill the bed interior as a continuous
+      ground covering, hairline joints filled with fine stone dust.
+
+      The new stone surface is CONTAINED STRICTLY INSIDE the planting bed
+      boundary. Its boundary is defined by the existing curved paver edging
+      on its perimeter and the deck stairs at its rear edge. The new stone
+      does NOT touch, cover, climb onto, or alter the deck stairs, the deck
+      platform, or the paver edging in any way. The wooden bottom step and
+      every wooden deck step remain unchanged wood. The existing curved
+      stacked-stone paver edging retains its original warm-grey
+      concrete-block color and shape, fully unaffected by the new stone
+      (the edging is NOT red — it stays its original warm grey).
+
+      Preserve everything else exactly: cable-rail deck with light-grey
+      composite decking, black chain-link fence, yellow steel raised
+      planters, multi-trunk shrub, daylilies and ornamental grasses, dark
+      navy siding. Match the existing daylight, perspective, and shadows.
+      Photorealistic.
