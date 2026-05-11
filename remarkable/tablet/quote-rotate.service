@@ -1,0 +1,6 @@
+[Unit]
+Description=Rotate reMarkable quote display image
+
+[Service]
+Type=oneshot
+ExecStart=/home/root/quote-display/rotate.sh --skip-if-active
