@@ -1,0 +1,68 @@
+# Flagstone-with-gravel-between variants — realistic day-one install
+# (no waiting for moss to fill in).
+
+source: ref-1.jpeg
+model: pro
+
+variations:
+  - name: warmtan-flagstone-pea-gravel
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with fitted
+      irregular flagstones in warm buff-tan and golden-brown natural stone
+      tones (like weathered Pennsylvania flagstone in its warm color family),
+      of varying sizes laid tight together to fill the entire interior of
+      the bed. Fill the narrow seams between stones with warm tan pea
+      gravel (small rounded pebbles, roughly 3/8 inch, matching the warm
+      tone of the stones). The new stone-and-gravel surface must fill the
+      bed interior only, from the existing paver edging up to the base of
+      the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and the
+      existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: warmtan-flagstone-grey-gravel
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with fitted
+      irregular flagstones in warm buff-tan and golden-brown natural stone
+      tones (like weathered Pennsylvania flagstone in its warm color family),
+      of varying sizes laid tight together to fill the entire interior of
+      the bed. Fill the narrow seams between stones with crushed grey
+      gravel (small angular grey stones, roughly 1/4 to 3/8 inch, providing
+      a cool contrast against the warm flagstone). The new surface must
+      fill the bed interior only, from the existing paver edging up to the
+      base of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and the
+      existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: greystone-flagstone-pea-gravel
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with fitted
+      irregular flagstones in cool grey and slate-blue natural stone tones
+      (weathered bluestone-style flagstone), of varying sizes laid tight
+      together to fill the entire interior of the bed. Fill the narrow
+      seams between stones with warm tan pea gravel (small rounded pebbles,
+      roughly 3/8 inch, providing a warm contrast against the cool stones).
+      The new surface must fill the bed interior only, from the existing
+      paver edging up to the base of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and the
+      existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.

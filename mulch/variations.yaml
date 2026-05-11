@@ -1,0 +1,56 @@
+# Mulch-area landscape variations.
+# Each entry submits one job to BFL FLUX.2.
+#
+# - source: default base photo (override per-variation if useful)
+# - model: pro | max | klein
+# - variations: list of named jobs
+#     name:       used as the output filename
+#     prompt:     instruction. Lock in what should NOT change.
+#     references: optional extra reference images (input_image_2, _3, ...)
+#     source:     optional override of the base photo for this variation only.
+
+source: ref-1.jpeg
+model: pro
+
+variations:
+  - name: river-rock
+    prompt: >-
+      Replace the wood-chip mulch in the planting beds with a smooth, even
+      layer of cool-grey river rock, roughly 3 to 5 inches in diameter, in a
+      mix of light and medium grey tones. The rock should fill the bed evenly
+      from the curved paver edging all the way to the deck, with no exposed
+      soil. Preserve everything else exactly as it is: the cable-rail deck
+      with light-grey composite decking and steps, the black chain-link
+      fence, the yellow steel raised planters, the multi-trunk shrub on the
+      left, the daylilies and ornamental grasses along the curved stacked-stone
+      paver edging, and the dark navy siding. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: fieldstone-moss
+    prompt: >-
+      Replace the wood-chip mulch in the planting beds with fitted irregular
+      fieldstone flagstones — flat, weathered, warm-grey natural stone slabs
+      laid tight together so they form a continuous surface, with vivid green
+      moss filling the narrow seams between stones. The flagstone should fill
+      the entire bed from the curved paver edging up to the deck. Preserve
+      everything else exactly as it is: the cable-rail deck with light-grey
+      composite decking and steps, the black chain-link fence, the yellow
+      steel raised planters, the multi-trunk shrub on the left, the
+      daylilies and ornamental grasses along the curved stacked-stone paver
+      edging, and the dark navy siding. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: bluestone-pads-pea-gravel
+    prompt: >-
+      Replace the wood-chip mulch in the planting beds with a field of warm
+      tan pea gravel (small rounded pebbles, roughly 3/8 inch). Set into the
+      pea gravel, place a sequence of large rectangular bluestone stepping
+      pads — flat, grey-blue, roughly 24 by 36 inches — creating a clear path
+      from the curved paver edging up to the base of the deck stairs, with
+      pea gravel filling around and between the pads. Preserve everything
+      else exactly as it is: the cable-rail deck with light-grey composite
+      decking and steps, the black chain-link fence, the yellow steel raised
+      planters, the multi-trunk shrub on the left, the daylilies and
+      ornamental grasses along the curved stacked-stone paver edging, and
+      the dark navy siding. Match the existing daylight, perspective, and
+      shadows. Photorealistic.

@@ -1,0 +1,25 @@
+# Final-quality render of the warm-tan fieldstone winner.
+source: ref-1.jpeg
+model: max
+
+variations:
+  - name: fieldstone-warm-tan-max
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with fitted
+      irregular flagstones in warm buff-tan and golden-brown natural stone
+      tones (like weathered Pennsylvania flagstone in its warm color
+      family), of varying sizes laid tight together to fill the entire
+      interior of the bed as a continuous ground covering, with vivid green
+      moss filling the narrow seams between stones. The new stone must fill
+      the bed interior only, from the existing paver edging up to the base
+      of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and crucially
+      the existing curved stacked-stone paver edging on the left side of
+      the bed (the small grey concrete-block retaining edging — leave it
+      fully intact and visible, do not replace it with flagstone). Match
+      the existing daylight, perspective, and shadows. Photorealistic.

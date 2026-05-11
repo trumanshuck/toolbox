@@ -1,0 +1,93 @@
+# Fieldstone color variations — typical Midwest stone-yard palette.
+# Uses tight-jointed flagstone description (stones touching each other with
+# hairline joints filled with stone dust) to avoid the "stones in a gravel
+# field" interpretation we got last time.
+
+source: ref-1.jpeg
+model: pro
+
+variations:
+  - name: glacial-michigan-fieldstone
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of glacial fieldstone — flat, rounded,
+      irregularly-shaped natural stones in a varied Midwest palette of warm
+      greys, soft browns, buff tans, and occasional rust-orange iron-oxide
+      tones (the classic mixed-color appearance of stones tumbled by glaciers,
+      common across Michigan and the Great Lakes region). Stones of varying
+      sizes laid touching each other to fill the entire interior of the bed
+      as a continuous ground covering, with only hairline joints filled with
+      fine stone dust. The new surface fills the bed interior only, from the
+      existing paver edging up to the base of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and crucially
+      the existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: tennessee-mossy-fieldstone
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of Tennessee fieldstone flagstone —
+      flat, irregularly-shaped natural stones in a mossy mixed palette of
+      olive-green, grey, soft brown, and weathered tan with subtle natural
+      lichen variations across the surface (the characteristic "mossy"
+      multi-tone appearance Tennessee fieldstone is known for). Stones of
+      varying sizes laid touching each other to fill the entire interior of
+      the bed as a continuous ground covering, with only hairline joints
+      filled with fine stone dust. The new surface fills the bed interior
+      only, from the existing paver edging up to the base of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and crucially
+      the existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: charcoal-fieldstone
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of charcoal-grey fieldstone flagstone —
+      flat, irregularly-shaped natural stones in deep charcoal, slate-grey,
+      and near-black tones (a moody monochromatic palette). Stones of
+      varying sizes laid touching each other to fill the entire interior of
+      the bed as a continuous ground covering, with only hairline joints
+      filled with fine stone dust. The new surface fills the bed interior
+      only, from the existing paver edging up to the base of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and crucially
+      the existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
+
+  - name: red-sandstone-fieldstone
+    prompt: >-
+      Replace ONLY the wood-chip mulch inside the planting bed with a
+      tight-packed dry-laid surface of red sandstone flagstone — flat,
+      irregularly-shaped natural stones in warm rust-red, terracotta,
+      cinnamon-brown, and weathered orange tones (a warm earthy palette).
+      Stones of varying sizes laid touching each other to fill the entire
+      interior of the bed as a continuous ground covering, with only
+      hairline joints filled with fine stone dust. The new surface fills
+      the bed interior only, from the existing paver edging up to the base
+      of the deck stairs.
+      Preserve the rest of the scene exactly and unchanged: the cable-rail
+      deck with its light-grey composite decking AND every wooden deck step
+      including the lowest step at ground level (do NOT replace any portion
+      of any deck step with stone — the steps remain wood); the black
+      chain-link fence; the yellow steel raised planters; the multi-trunk
+      shrub on the left; the daylilies and ornamental grasses; and crucially
+      the existing curved stacked-stone paver edging on the left side of the
+      bed — leave it fully intact and visible. Match the existing daylight,
+      perspective, and shadows. Photorealistic.
