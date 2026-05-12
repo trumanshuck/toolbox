@@ -1,0 +1,37 @@
+(to remind myself)
+
+Make a place to sit down.
+Sit down. Be quiet.
+You must depend upon
+affection, reading, knowledge,
+skill—more of each
+than you have—inspiration,
+work, growing older, patience,
+for patience joins time
+to eternity. Any readers
+who like your work,
+doubt their judgment.
+
+Breathe with unconditional breath
+the unconditioned air.
+Shun electric wire.
+Communicate slowly. Live
+a three-dimensioned life;
+stay away from screens.
+Stay away from anything
+that obscures the place it is in.
+There are no unsacred places;
+there are only sacred places
+and desecrated places.
+
+Accept what comes from silence.
+Make the best you can of it.
+Of the little words that come
+out of the silence, like prayers
+prayed back to the one who prays,
+make a poem that does not disturb
+the silence from which it came.
+
+---
+
+Wendell Berry
