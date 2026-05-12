@@ -1,14 +1,25 @@
 #!/usr/bin/env python3
-"""Render content/**/*.md into rendered/*.png sized for the reMarkable 2 (1404x1872).
+"""Render a curated subset of content/**/*.md into rendered/*.png for the rM2 (1404x1872).
 
 Markdown convention: body of the file is the quote (any markdown). An optional
 `---` line separates the body from an attribution on the line(s) below.
 
-Source layout: drop loose .md files at the root of content/, or organize sets
-into subfolders (e.g. content/<book-name>/<takeaway>.md). Output filenames are
-flattened by joining path parts with `-`, so a file at
-content/some-book/foo.md becomes rendered/some-book-foo.png. PNGs from the
-same subfolder sort together in the tablet's rotation.
+Source layout (selection rules below depend on this):
+  content/
+    parenting/<set>/<file>.md   — always selected
+    favorites/<file>.md          — always selected
+    poetry/<author>/<file>.md    — pool, filtered by line count, picked to
+                                   balance the total card count
+
+Selection: every parenting and favorites card is included unconditionally.
+Extras are pulled from the poetry/ pool so that total poems == parenting count,
+split evenly between author subdirs, choosing only poems short enough to render
+comfortably (body line count <= MAX_POEM_LINES). Picks are randomized fresh on
+each run.
+
+Output filenames flatten path parts with `-`, so content/poetry/oliver/foo.md
+becomes rendered/poetry-oliver-foo.png. The tablet shuffles regardless of name
+order, so clustering by prefix doesn't affect rotation.
 
 Layout modes (auto-detected from body content):
 - **Literal** (body has any internal newline): preserve all whitespace, no
@@ -19,6 +30,7 @@ Layout modes (auto-detected from body content):
   centered individually. Use this for prose quotes.
 """
 
+import random
 import re
 import sys
 from pathlib import Path
@@ -36,6 +48,11 @@ MIN_BODY_SIZE = 22
 MAX_BODY_SIZE = 130
 ATTRIB_SIZE = 38
 ATTRIB_LINE_SPACING = 1.25
+
+# Poems longer than this (non-blank body lines) are excluded from the pool —
+# they fit, but the auto-sizer drops the body font below ~40pt which is hard
+# to read at glance distance on the e-ink display.
+MAX_POEM_LINES = 25
 
 FONT_PATH = "/System/Library/Fonts/Avenir.ttc"
 BODY_FONT_INDEX = 0    # Book
@@ -180,20 +197,62 @@ def render(body, attribution, out_path):
     img.save(out_path, "PNG", optimize=True)
 
 
+def body_line_count(md_path):
+    body, _ = parse_quote(md_path.read_text())
+    return sum(1 for line in body.split("\n") if line.strip())
+
+
+def select_files(content_dir):
+    """Build the selected file set per the rules in the module docstring.
+
+    Total poems == parenting count. Favorites are always in; the remaining
+    poem slots are split evenly between author subdirs under poetry/, drawing
+    only from poems with <= MAX_POEM_LINES body lines.
+    """
+    parenting = sorted((content_dir / "parenting").rglob("*.md"))
+    favorites = sorted((content_dir / "favorites").rglob("*.md"))
+
+    need = len(parenting) - len(favorites)
+    extras = []
+    if need > 0:
+        author_dirs = sorted(d for d in (content_dir / "poetry").iterdir() if d.is_dir())
+        pools = [
+            [p for p in sorted(d.rglob("*.md")) if body_line_count(p) <= MAX_POEM_LINES]
+            for d in author_dirs
+        ]
+        # Balanced fill: try to take an even share from each pool. If a pool
+        # is short, the slack flows to the others on the next round.
+        remaining = need
+        while remaining > 0 and any(pools):
+            live = [p for p in pools if p]
+            share = max(1, remaining // len(live))
+            for pool in pools:
+                if not pool or remaining == 0:
+                    continue
+                take = min(share, len(pool), remaining)
+                picked = random.sample(pool, take)
+                extras.extend(picked)
+                for x in picked:
+                    pool.remove(x)
+                remaining -= take
+
+    return parenting + favorites + extras
+
+
 def main():
     here = Path(__file__).parent
     content_dir = here / "content"
     out_dir = here / "rendered"
     out_dir.mkdir(exist_ok=True)
 
-    md_files = sorted(content_dir.rglob("*.md"))
-    if not md_files:
-        sys.exit(f"No .md files in {content_dir}")
+    selected = select_files(content_dir)
+    if not selected:
+        sys.exit(f"No .md files selected from {content_dir}")
 
     for old in out_dir.glob("*.png"):
         old.unlink()
 
-    for md in md_files:
+    for md in selected:
         rel = md.relative_to(content_dir).with_suffix("")
         out = out_dir / ("-".join(rel.parts) + ".png")
         body, attribution = parse_quote(md.read_text())
