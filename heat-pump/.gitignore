@@ -1,0 +1,4 @@
+# Raw NOAA ISD downloads (~48 MB, re-fetchable by analyze.py). The cleaned
+# data/grr-hourly-temps.csv IS committed so the analysis is reproducible offline.
+data/raw/
+data/ecobee/
