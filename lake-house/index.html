@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lake house — buy vs. keep renting</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface-1: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-buy: #2a78d6;
+    --series-rent: #eb6834;
+    --delta-good: #006300;
+    --delta-bad: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface-1: #1a1a19;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-buy: #3987e5;
+      --series-rent: #d95926;
+      --delta-good: #0ca30c;
+      --delta-bad: #e66767;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  header {
+    padding: 28px 32px 8px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  header h1 { margin: 0 0 4px; font-size: 21px; font-weight: 650; }
+  header p { margin: 0; color: var(--text-secondary); max-width: 68ch; }
+  main {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 20px 32px 64px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+
+  #controls { display: flex; flex-direction: column; gap: 12px; }
+  fieldset {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-1);
+    padding: 12px 14px 14px;
+    margin: 0;
+  }
+  legend {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 0 4px;
+  }
+  .lever { margin: 10px 0 0; }
+  .lever:first-of-type { margin-top: 2px; }
+  .lever-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .lever-head label { color: var(--text-secondary); }
+  .lever-head input[type="number"] {
+    width: 96px;
+    text-align: right;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+  .lever input[type="range"] {
+    width: 100%;
+    margin: 6px 0 0;
+    accent-color: var(--series-buy);
+  }
+  .lever-note { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .check { display: flex; gap: 8px; align-items: baseline; margin-top: 10px; color: var(--text-secondary); }
+  .check input { accent-color: var(--series-buy); }
+  .derived {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--grid);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .derived strong { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+  #results { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .hero-label { color: var(--text-secondary); }
+  .hero-value { font-size: 52px; font-weight: 650; line-height: 1.1; margin: 2px 0; }
+  .hero-sub { color: var(--text-secondary); }
+  .good { color: var(--delta-good); }
+  .bad { color: var(--delta-bad); }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .tile {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .tile .t-label { font-size: 12px; color: var(--text-secondary); }
+  .tile .t-value { font-size: 22px; font-weight: 650; margin-top: 2px; }
+  .tile .t-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .chart-title { font-weight: 650; margin: 0 0 2px; }
+  .chart-sub { color: var(--text-secondary); font-size: 13px; margin: 0 0 10px; }
+  .legend-row { display: flex; gap: 16px; margin: 0 0 6px; font-size: 13px; color: var(--text-secondary); }
+  .legend-key { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 14px; height: 2px; border-radius: 1px; display: inline-block; }
+  .plot-wrap { position: relative; }
+  .plot-wrap svg { display: block; width: 100%; height: auto; }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    font-size: 12px;
+    min-width: 150px;
+    display: none;
+    z-index: 2;
+  }
+  .tooltip .tt-year { color: var(--text-muted); margin-bottom: 4px; }
+  .tooltip .tt-row { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+  .tooltip .tt-key { width: 10px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+  .tooltip .tt-val { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .tooltip .tt-name { color: var(--text-secondary); }
+
+  details summary {
+    cursor: pointer;
+    font-weight: 650;
+    color: var(--text-secondary);
+  }
+  table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 12px; }
+  th, td {
+    text-align: right;
+    padding: 4px 8px;
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px solid var(--grid);
+    white-space: nowrap;
+  }
+  th { color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; background: var(--surface-1); }
+  th:first-child, td:first-child { text-align: left; }
+  .table-scroll { max-height: 380px; overflow: auto; }
+  .fine { font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lake house — buy vs. keep renting</h1>
+  <p>Thirty-year comparison for a Leelanau County place: keep renting a week each summer
+  and invest the difference, or buy, use it freely, and rent it out short-term.
+  Both paths invest whatever cash the other path spends, so the comparison is apples to apples.</p>
+</header>
+<main>
+  <aside id="controls"></aside>
+  <section id="results">
+    <div class="card" id="hero"></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="card">
+      <p class="chart-title">Net worth over time</p>
+      <p class="chart-sub">Buy: home equity plus invested surplus. Rent: the down payment and every dollar owning would have cost, invested instead.</p>
+      <div class="legend-row" id="legend-nw"></div>
+      <div class="plot-wrap" id="chart-nw"></div>
+    </div>
+    <div class="card">
+      <p class="chart-title">Annual out-of-pocket</p>
+      <p class="chart-sub">Owning is net of short-term-rental income; renting is the summer week at lodging inflation.</p>
+      <div class="legend-row" id="legend-cash"></div>
+      <div class="plot-wrap" id="chart-cash"></div>
+    </div>
+    <div class="card">
+      <details>
+        <summary>Year-by-year table</summary>
+        <div class="table-scroll"><table id="detail-table"></table></div>
+      </details>
+    </div>
+    <div class="card fine">
+      <p style="margin:0 0 6px"><strong>Where the defaults come from</strong> (researched Aug 2026):</p>
+      <p style="margin:0 0 6px">
+        <strong>Price $1.2M</strong> — typical 3–4BR with private inland-lake frontage (Glen Lake, Lake Leelanau);
+        county waterfront average list ~$1.32M, Lake Leelanau median ~$1.04M (Redfin/Zillow).
+        Lake-access without frontage runs ~$350–650k; Lake Michigan frontage ~$1.5M+.
+        <strong>Rate 7.1%</strong> — Aug 2026 30-yr primary ~6.7% (Freddie Mac) plus the second-home premium;
+        an investment-property classification would run ~7.35% with 25% down.
+        <strong>Tax 1.6%</strong> — Leelanau non-homestead millage (~32–38 mills, no Principal Residence Exemption)
+        on taxable value that uncaps to ~50% of price at purchase; grows at inflation under the Michigan cap (Michigan Treasury 2024 rates).
+        <strong>Insurance $3k, maintenance 1.5%</strong> — northern-Michigan waterfront quotes; includes dock in/out and winterization;
+        flood insurance usually not required on inland lakes.
+        <strong>Appreciation 4.5%</strong> — Traverse City area long-run; 10-yr trailing was ~8.9%/yr but 2025–26 cooled to 1.5–3.6%.
+        <strong>STR</strong> — area occupancy ~38–53% with 40–45% of revenue in June–Aug; lakefront 4BRs list ~$5–7k/wk peak
+        (a 3BR more like $3–4.5k); ~12 peak weekly slots exist, so 9 rented assumes keeping 2–3 for ourselves;
+        shoulder weeks price near half of peak; full-service management runs 20–30% (AirDNA/Rabbu/AirROI free pages, local managers).
+      </p>
+      <p style="margin:0">
+        <strong>Caveats the sliders don't capture:</strong> STR rules are township-by-township — Glen Arbor and Leland are permissive
+        (registration only), Suttons Bay and Elmwood cap permits, and permits often die at sale, so verify the township before buying.
+        Renting more than ~2 weeks/yr while using rental income to qualify can reclassify the mortgage as investment property (higher rate, 25% down).
+        IRS treats it as a personal residence if personal use exceeds the greater of 14 days or 10% of rented days;
+        under 15 rented days/yr the income is tax-free. Michigan's 6% use tax is collected by Airbnb/VRBO automatically.
+        The model ignores income tax on STR profit (depreciation usually shelters much of it) and any tax on investment gains in both scenarios.
+      </p>
+    </div>
+  </section>
+</main>
+<script>
+const DEFAULTS = {
+  price: 1200000, downPct: 20, closingPct: 3, ratePct: 7.1, termYears: 30,
+  taxPct: 1.6, insurance: 3000, maintPct: 1.5, utilities: 4200,
+  peakWeeks: 9, peakRate: 5500, offWeeks: 8, offRate: 2750, mgmtPct: 25, otherPct: 8,
+  annualRent: 3000, rentInflPct: 4,
+  years: 30, apprPct: 4.5, inflPct: 2.5, mktPct: 7, sellCostPct: 7,
+  sellAtEnd: false, includeLifestyle: false, extraWeeks: 3, extraWeekValue: 1500,
+};
+
+const GROUPS = [
+  { name: 'Purchase & financing', items: [
+    { k: 'price', label: 'Purchase price', min: 200000, max: 3000000, step: 25000, fmt: 'usd' },
+    { k: 'downPct', label: 'Down payment', min: 10, max: 50, step: 1, fmt: 'pct' },
+    { k: 'ratePct', label: 'Mortgage rate', min: 3, max: 10, step: 0.125, fmt: 'pct' },
+    { k: 'termYears', label: 'Term', min: 10, max: 30, step: 5, fmt: 'yr' },
+    { k: 'closingPct', label: 'Closing costs', min: 0, max: 6, step: 0.5, fmt: 'pct' },
+  ]},
+  { name: 'Cost of owning', items: [
+    { k: 'taxPct', label: 'Property tax', min: 0.5, max: 3, step: 0.05, fmt: 'pct',
+      note: 'Effective rate on market value; grows with inflation (Michigan taxable-value cap), not appreciation.' },
+    { k: 'insurance', label: 'Insurance / yr', min: 0, max: 15000, step: 250, fmt: 'usd' },
+    { k: 'maintPct', label: 'Maintenance / yr', min: 0, max: 4, step: 0.25, fmt: 'pct',
+      note: 'Percent of home value: upkeep, dock in/out, winterization, turnover wear.' },
+    { k: 'utilities', label: 'Utilities / yr', min: 0, max: 15000, step: 250, fmt: 'usd' },
+  ]},
+  { name: 'Short-term rental income', items: [
+    { k: 'peakWeeks', label: 'Peak weeks rented', min: 0, max: 14, step: 1, fmt: 'wk' },
+    { k: 'peakRate', label: 'Peak rate / wk', min: 0, max: 15000, step: 250, fmt: 'usd' },
+    { k: 'offWeeks', label: 'Shoulder weeks rented', min: 0, max: 24, step: 1, fmt: 'wk' },
+    { k: 'offRate', label: 'Shoulder rate / wk', min: 0, max: 8000, step: 250, fmt: 'usd' },
+    { k: 'mgmtPct', label: 'Management fee', min: 0, max: 40, step: 1, fmt: 'pct' },
+    { k: 'otherPct', label: 'Other cost of revenue', min: 0, max: 25, step: 1, fmt: 'pct',
+      note: 'Platform fees, supplies, extra cleaning, lodging tax not passed to guests.' },
+  ], derived: true },
+  { name: 'If we keep renting', items: [
+    { k: 'annualRent', label: 'Rent / yr today', min: 0, max: 20000, step: 250, fmt: 'usd' },
+    { k: 'rentInflPct', label: 'Lodging inflation', min: 0, max: 8, step: 0.25, fmt: 'pct',
+      note: 'Applies both to the week we would rent and to the STR rates we would charge.' },
+  ]},
+  { name: 'Economy & horizon', items: [
+    { k: 'years', label: 'Horizon', min: 5, max: 40, step: 1, fmt: 'yr' },
+    { k: 'apprPct', label: 'Home appreciation', min: 0, max: 8, step: 0.25, fmt: 'pct' },
+    { k: 'mktPct', label: 'Market return', min: 0, max: 12, step: 0.25, fmt: 'pct' },
+    { k: 'inflPct', label: 'Inflation', min: 0, max: 6, step: 0.25, fmt: 'pct' },
+    { k: 'sellCostPct', label: 'Selling costs', min: 0, max: 10, step: 0.5, fmt: 'pct' },
+  ], checks: [
+    { k: 'sellAtEnd', label: 'Assume we sell at the horizon (subtract selling costs)' },
+  ]},
+  { name: 'Lifestyle value', items: [
+    { k: 'extraWeeks', label: 'Extra getaway weeks / yr', min: 0, max: 12, step: 1, fmt: 'wk' },
+    { k: 'extraWeekValue', label: 'Value per extra week', min: 0, max: 6000, step: 100, fmt: 'usd' },
+  ], checks: [
+    { k: 'includeLifestyle', label: 'Count spontaneous extra use as a benefit of owning' },
+  ]},
+];
+
+const state = { ...DEFAULTS };
+
+const usd = n => (n < 0 ? '−$' : '$') + Math.round(Math.abs(n)).toLocaleString('en-US');
+function usdCompact(n) {
+  const sign = n < 0 ? '−' : '';
+  const a = Math.abs(n);
+  if (a >= 1e6) return sign + '$' + (a / 1e6).toFixed(a >= 10e6 ? 1 : 2).replace(/\.?0+$/, '') + 'M';
+  if (a >= 1e3) return sign + '$' + Math.round(a / 1e3) + 'K';
+  return sign + '$' + Math.round(a);
+}
+const fmtVal = (v, fmt) =>
+  fmt === 'usd' ? usd(v) : fmt === 'pct' ? v + '%' : fmt === 'yr' ? v + ' yr' : v + ' wk';
+
+function compute(s) {
+  const down = s.price * s.downPct / 100;
+  const closing = s.price * s.closingPct / 100;
+  const loan = s.price - down;
+  const mr = s.ratePct / 100 / 12;
+  const nPay = s.termYears * 12;
+  const mPay = mr === 0 ? loan / nPay : loan * mr / (1 - Math.pow(1 + mr, -nPay));
+
+  const rows = [];
+  let balance = loan;
+  let portRent = down + closing;
+  let portBuy = 0;
+  const strGross0 = s.peakWeeks * s.peakRate + s.offWeeks * s.offRate;
+  let breakEven = null;
+
+  for (let t = 1; t <= s.years; t++) {
+    const infl = Math.pow(1 + s.inflPct / 100, t - 1);
+    const homeValue = s.price * Math.pow(1 + s.apprPct / 100, t);
+
+    let pi = 0;
+    if (balance > 0.01) {
+      for (let m = 0; m < 12 && balance > 0.01; m++) {
+        const interest = balance * mr;
+        const principal = Math.min(mPay - interest, balance);
+        balance -= principal;
+        pi += interest + principal;
+      }
+    }
+
+    const tax = s.price * s.taxPct / 100 * infl;
+    const ins = s.insurance * infl;
+    const maint = homeValue * s.maintPct / 100;
+    const util = s.utilities * infl;
+    const lodgingInfl = Math.pow(1 + s.rentInflPct / 100, t - 1);
+    const strNet = strGross0 * lodgingInfl * (1 - s.mgmtPct / 100 - s.otherPct / 100);
+
+    const ownOutlay = pi + tax + ins + maint + util - strNet;
+    const rentOutlay = s.annualRent * Math.pow(1 + s.rentInflPct / 100, t - 1);
+
+    portRent *= 1 + s.mktPct / 100;
+    portBuy *= 1 + s.mktPct / 100;
+    const diff = ownOutlay - rentOutlay;
+    if (diff > 0) portRent += diff; else portBuy -= diff;
+
+    const lifestyle = s.includeLifestyle
+      ? s.extraWeeks * s.extraWeekValue * Math.pow(1 + s.rentInflPct / 100, t - 1) : 0;
+    if (lifestyle) portRent += lifestyle;
+
+    const sellHaircut = s.sellAtEnd && t === s.years ? homeValue * s.sellCostPct / 100 : 0;
+    const nwBuy = homeValue - balance + portBuy - sellHaircut;
+    const nwRent = portRent;
+    if (breakEven === null && nwBuy >= nwRent) breakEven = t;
+
+    rows.push({ t, homeValue, balance, ownOutlay, rentOutlay, strNet, nwBuy, nwRent });
+  }
+
+  return { rows, mPay, down, closing, strGross0, breakEven,
+    year1: rows[0], final: rows[rows.length - 1] };
+}
+
+function buildControls() {
+  const root = document.getElementById('controls');
+  for (const g of GROUPS) {
+    const fs = document.createElement('fieldset');
+    const lg = document.createElement('legend');
+    lg.textContent = g.name;
+    fs.appendChild(lg);
+    for (const item of g.items) {
+      const div = document.createElement('div');
+      div.className = 'lever';
+      const head = document.createElement('div');
+      head.className = 'lever-head';
+      const label = document.createElement('label');
+      label.textContent = item.label;
+      label.htmlFor = 'num-' + item.k;
+      const num = document.createElement('input');
+      num.type = 'number';
+      num.id = 'num-' + item.k;
+      num.min = item.min; num.max = item.max; num.step = item.step;
+      num.value = state[item.k];
+      head.append(label, num);
+      const range = document.createElement('input');
+      range.type = 'range';
+      range.min = item.min; range.max = item.max; range.step = item.step;
+      range.value = state[item.k];
+      range.setAttribute('aria-label', item.label);
+      const sync = v => {
+        state[item.k] = v;
+        num.value = v; range.value = v;
+        render();
+      };
+      num.addEventListener('input', () => {
+        const v = parseFloat(num.value);
+        if (Number.isFinite(v)) sync(Math.min(item.max, Math.max(item.min, v)));
+      });
+      range.addEventListener('input', () => sync(parseFloat(range.value)));
+      div.append(head, range);
+      if (item.note) {
+        const note = document.createElement('div');
+        note.className = 'lever-note';
+        note.textContent = item.note;
+        div.appendChild(note);
+      }
+      fs.appendChild(div);
+    }
+    for (const c of g.checks || []) {
+      const wrap = document.createElement('label');
+      wrap.className = 'check';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = state[c.k];
+      cb.addEventListener('change', () => { state[c.k] = cb.checked; render(); });
+      const span = document.createElement('span');
+      span.textContent = c.label;
+      wrap.append(cb, span);
+      fs.appendChild(wrap);
+    }
+    if (g.derived) {
+      const d = document.createElement('div');
+      d.className = 'derived';
+      d.id = 'str-derived';
+      fs.appendChild(d);
+    }
+    root.appendChild(fs);
+  }
+}
+
+function niceTicks(max) {
+  const raw = max / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => max / s <= 5) || 10 * mag;
+  const ticks = [];
+  for (let v = 0; v < max - 1e-9; v += step) ticks.push(v);
+  ticks.push(ticks.length * step);
+  return ticks;
+}
+
+const SVGNS = 'http://www.w3.org/2000/svg';
+function el(name, attrs) {
+  const e = document.createElementNS(SVGNS, name);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+
+function drawLineChart(containerId, legendId, series, years, opts = {}) {
+  const container = document.getElementById(containerId);
+  container.textContent = '';
+  const legend = document.getElementById(legendId);
+  legend.textContent = '';
+  for (const sr of series) {
+    const key = document.createElement('span');
+    key.className = 'legend-key';
+    const sw = document.createElement('span');
+    sw.className = 'legend-swatch';
+    sw.style.background = sr.color;
+    const name = document.createElement('span');
+    name.textContent = sr.name;
+    key.append(sw, name);
+    legend.appendChild(key);
+  }
+
+  const W = 760, H = 300, padL = 56, padR = 84, padT = 12, padB = 30;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const maxY = Math.max(1, ...series.flatMap(sr => sr.values));
+  const ticks = niceTicks(maxY);
+  const topY = ticks[ticks.length - 1];
+  const x = t => padL + (t - 1) / Math.max(1, years - 1) * plotW;
+  const y = v => padT + plotH - v / topY * plotH;
+
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img',
+    'aria-label': opts.ariaLabel || 'line chart' });
+
+  for (const tv of ticks) {
+    svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y(tv), y2: y(tv),
+      stroke: tv === 0 ? 'var(--baseline)' : 'var(--grid)', 'stroke-width': 1 }));
+    const lbl = el('text', { x: padL - 8, y: y(tv) + 4, 'text-anchor': 'end',
+      fill: 'var(--text-muted)', 'font-size': 11 });
+    lbl.textContent = usdCompact(tv);
+    svg.appendChild(lbl);
+  }
+  const xtickEvery = years > 20 ? 5 : years > 8 ? 4 : 1;
+  for (let t = 1; t <= years; t++) {
+    if (t !== 1 && t !== years && t % xtickEvery !== 0) continue;
+    const lbl = el('text', { x: x(t), y: H - 8, 'text-anchor': 'middle',
+      fill: 'var(--text-muted)', 'font-size': 11 });
+    lbl.textContent = 'yr ' + t;
+    svg.appendChild(lbl);
+  }
+
+  for (const sr of series) {
+    const d = sr.values.map((v, i) => (i === 0 ? 'M' : 'L') + x(i + 1) + ' ' + y(v)).join(' ');
+    svg.appendChild(el('path', { d, fill: 'none', stroke: sr.color,
+      'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+  }
+  const endYs = series.map(sr => y(sr.values[years - 1]));
+  const collide = series.length === 2 && Math.abs(endYs[0] - endYs[1]) < 16;
+  series.forEach((sr, i) => {
+    const ex = x(years), ey = endYs[i];
+    svg.appendChild(el('circle', { cx: ex, cy: ey, r: 6, fill: 'var(--surface-1)' }));
+    svg.appendChild(el('circle', { cx: ex, cy: ey, r: 4, fill: sr.color }));
+    if (!collide) {
+      const lbl = el('text', { x: ex + 10, y: ey + 4, fill: 'var(--text-secondary)',
+        'font-size': 11, 'font-weight': 650 });
+      lbl.textContent = usdCompact(sr.values[years - 1]);
+      svg.appendChild(lbl);
+    }
+  });
+
+  const cross = el('line', { x1: 0, x2: 0, y1: padT, y2: padT + plotH,
+    stroke: 'var(--baseline)', 'stroke-width': 1, visibility: 'hidden' });
+  svg.appendChild(cross);
+  const dots = series.map(sr => {
+    const g = el('g', { visibility: 'hidden' });
+    const ring = el('circle', { r: 6, fill: 'var(--surface-1)' });
+    const dot = el('circle', { r: 4, fill: sr.color });
+    g.append(ring, dot);
+    svg.appendChild(g);
+    return g;
+  });
+
+  const tip = document.createElement('div');
+  tip.className = 'tooltip';
+  container.append(svg, tip);
+
+  function onMove(ev) {
+    const rect = svg.getBoundingClientRect();
+    const sx = (ev.clientX - rect.left) / rect.width * W;
+    if (sx < padL - 10 || sx > W - padR + 10) { onLeave(); return; }
+    const t = Math.max(1, Math.min(years,
+      Math.round((sx - padL) / plotW * (years - 1)) + 1));
+    const px = x(t);
+    cross.setAttribute('x1', px); cross.setAttribute('x2', px);
+    cross.setAttribute('visibility', 'visible');
+    tip.style.display = 'block';
+    tip.textContent = '';
+    const yr = document.createElement('div');
+    yr.className = 'tt-year';
+    yr.textContent = 'Year ' + t;
+    tip.appendChild(yr);
+    series.forEach((sr, i) => {
+      const py = y(sr.values[t - 1]);
+      dots[i].setAttribute('transform', `translate(${px} ${py})`);
+      dots[i].setAttribute('visibility', 'visible');
+      const row = document.createElement('div');
+      row.className = 'tt-row';
+      const key = document.createElement('span');
+      key.className = 'tt-key';
+      key.style.background = sr.color;
+      const val = document.createElement('span');
+      val.className = 'tt-val';
+      val.textContent = usd(sr.values[t - 1]);
+      const name = document.createElement('span');
+      name.className = 'tt-name';
+      name.textContent = sr.name;
+      row.append(key, val, name);
+      tip.appendChild(row);
+    });
+    const cw = container.clientWidth;
+    const leftPx = px / W * rect.width;
+    tip.style.left = Math.min(cw - 170, Math.max(0, leftPx + 14)) + 'px';
+    tip.style.top = '10px';
+  }
+  function onLeave() {
+    cross.setAttribute('visibility', 'hidden');
+    dots.forEach(d => d.setAttribute('visibility', 'hidden'));
+    tip.style.display = 'none';
+  }
+  svg.addEventListener('pointermove', onMove);
+  svg.addEventListener('pointerleave', onLeave);
+}
+
+function tile(label, value, sub) {
+  const d = document.createElement('div');
+  d.className = 'tile';
+  const l = document.createElement('div'); l.className = 't-label'; l.textContent = label;
+  const v = document.createElement('div'); v.className = 't-value'; v.textContent = value;
+  d.append(l, v);
+  if (sub) {
+    const s = document.createElement('div'); s.className = 't-sub'; s.textContent = sub;
+    d.appendChild(s);
+  }
+  return d;
+}
+
+function render() {
+  const r = compute(state);
+  const delta = r.final.nwBuy - r.final.nwRent;
+
+  const hero = document.getElementById('hero');
+  hero.textContent = '';
+  const hl = document.createElement('div');
+  hl.className = 'hero-label';
+  hl.textContent = `Buying vs. renting, after ${state.years} years`;
+  const hv = document.createElement('div');
+  hv.className = 'hero-value ' + (delta >= 0 ? 'good' : 'bad');
+  hv.textContent = (delta >= 0 ? '+$' : '−$') + usdCompact(Math.abs(delta)).slice(1);
+  const hs = document.createElement('div');
+  hs.className = 'hero-sub';
+  hs.textContent = delta >= 0
+    ? `Buying ends ${usd(delta)} ahead. ` : `Buying ends ${usd(-delta)} behind. `;
+  hs.textContent += r.breakEven
+    ? `Buying pulls ahead in year ${r.breakEven}.`
+    : 'Buying never pulls ahead over this horizon.';
+  hero.append(hl, hv, hs);
+
+  const tiles = document.getElementById('tiles');
+  tiles.textContent = '';
+  tiles.append(
+    tile('Cash to close', usd(r.down + r.closing), `${state.downPct}% down + closing`),
+    tile('Mortgage', usd(r.mPay) + '/mo', usd(r.mPay * 12) + '/yr'),
+    tile('Year-1 STR income, net', usd(r.year1.strNet), 'gross ' + usd(r.strGross0)),
+    tile('Year-1 net cost to own', usd(r.year1.ownOutlay), 'vs ' + usd(r.year1.rentOutlay) + ' renting'),
+    tile('Break-even', r.breakEven ? 'year ' + r.breakEven : 'never', 'net worth crossover'),
+  );
+
+  const d = document.getElementById('str-derived');
+  d.textContent = '';
+  d.append('Gross ', strong(usd(r.strGross0)), ' / yr → net ', strong(usd(r.year1.strNet)),
+    ' after fees, before mortgage & carrying costs.');
+  function strong(txt) { const s = document.createElement('strong'); s.textContent = txt; return s; }
+
+  drawLineChart('chart-nw', 'legend-nw', [
+    { name: 'Buy', color: 'var(--series-buy)', values: r.rows.map(x => x.nwBuy) },
+    { name: 'Keep renting', color: 'var(--series-rent)', values: r.rows.map(x => x.nwRent) },
+  ], state.years, { ariaLabel: 'Net worth by year, buying versus renting' });
+
+  drawLineChart('chart-cash', 'legend-cash', [
+    { name: 'Own (net of STR)', color: 'var(--series-buy)', values: r.rows.map(x => Math.max(0, x.ownOutlay)) },
+    { name: 'Rent a week', color: 'var(--series-rent)', values: r.rows.map(x => x.rentOutlay) },
+  ], state.years, { ariaLabel: 'Annual out-of-pocket by year, owning versus renting' });
+
+  const table = document.getElementById('detail-table');
+  table.textContent = '';
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  for (const h of ['Year', 'Home value', 'Loan balance', 'Own outlay (net)', 'Rent outlay',
+    'STR net income', 'Net worth: buy', 'Net worth: rent', 'Buy − rent']) {
+    const th = document.createElement('th'); th.textContent = h; hr.appendChild(th);
+  }
+  thead.appendChild(hr);
+  const tbody = document.createElement('tbody');
+  for (const row of r.rows) {
+    const tr = document.createElement('tr');
+    for (const v of [row.t, usd(row.homeValue), usd(row.balance), usd(row.ownOutlay),
+      usd(row.rentOutlay), usd(row.strNet), usd(row.nwBuy), usd(row.nwRent),
+      usd(row.nwBuy - row.nwRent)]) {
+      const td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  table.append(thead, tbody);
+}
+
+buildControls();
+render();
+</script>
+</body>
+</html>
