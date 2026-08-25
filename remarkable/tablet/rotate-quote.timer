@@ -1,0 +1,12 @@
+[Unit]
+Description=reMarkable quote rotation (quarter past)
+
+[Timer]
+# Counterpart to rotate-dash.timer — see its comment for the schedule.
+OnCalendar=*-*-* 07..22:15:00 America/New_York
+WakeSystem=true
+Persistent=true
+AccuracySec=15s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=reMarkable dashboard rotation (top of hour)
+
+[Timer]
+# xochitl needs ~72s after each rotate to fully suspend (12s idle → light
+# sleep → 60s → deep sleep with image painted), so fires must stay
+# comfortably further apart than that. Dashboard at :00, quote at :15
+# (rotate-quote.timer) — household page for the first quarter hour, a
+# quote for the rest. Both timers idle outside 7am–10pm ET (DST handled
+# by systemd via the zone) so the tablet sleeps all night.
+OnCalendar=*-*-* 07..22:00:00 America/New_York
+WakeSystem=true
+Persistent=true
+AccuracySec=15s
+
+[Install]
+WantedBy=timers.target

@@ -63,14 +63,17 @@ sed -i '/^\[General\]\$/a isCustomSleepScreen=true' \"\$CONF\"
 echo "→ Deploying rotate.sh and systemd units"
 scp "$SCRIPT_DIR/tablet/rotate.sh" "$REMOTE:$RM_PROJECT_DIR/rotate.sh"
 ssh "$REMOTE" "chmod +x '$RM_PROJECT_DIR/rotate.sh'"
-scp "$SCRIPT_DIR/tablet/quote-rotate.service" "$REMOTE:/etc/systemd/system/"
-scp "$SCRIPT_DIR/tablet/quote-rotate.timer"   "$REMOTE:/etc/systemd/system/"
+scp "$SCRIPT_DIR/tablet/rotate-dash.service" "$SCRIPT_DIR/tablet/rotate-dash.timer" \
+    "$SCRIPT_DIR/tablet/rotate-quote.service" "$SCRIPT_DIR/tablet/rotate-quote.timer" \
+    "$REMOTE:/etc/systemd/system/"
 
-echo "→ Enabling hourly timer"
+echo "→ Enabling rotation timers (dash at :00, quote at :15)"
 ssh "$REMOTE" "
+  systemctl disable --now quote-rotate.timer 2>/dev/null || true
+  rm -f /etc/systemd/system/quote-rotate.service /etc/systemd/system/quote-rotate.timer
   systemctl daemon-reload
-  systemctl enable --now quote-rotate.timer
-  systemctl list-timers quote-rotate.timer --no-pager
+  systemctl enable --now rotate-dash.timer rotate-quote.timer
+  systemctl list-timers 'rotate-*' --no-pager
 "
 
 echo "→ Starting xochitl with new config"
