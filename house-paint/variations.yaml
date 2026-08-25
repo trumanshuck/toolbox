@@ -1,0 +1,83 @@
+# House body-color variations.
+# Each entry submits one job to BFL FLUX.2.
+#
+# - source: default base photo (override per-variation if useful)
+# - model: pro | max | klein
+# - variations: list of named jobs
+#     name:       used as the output filename
+#     prompt:     instruction. Lock in what should NOT change.
+#     references: optional extra reference images (input_image_2, _3, ...)
+#     source:     optional override of the base photo for this variation only.
+#
+# Keep it TWO-TONE: a lighter body color plus a distinct, darker second color on
+# the accent band beneath the second-floor windows and the side accent wall
+# (the areas currently painted charcoal-grey).
+
+source: IMG_2814.jpeg
+model: max
+
+variations:
+  - name: buttercream-yellow
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme. Paint the main body of
+      the wood lap siding — the dormer and the upper second-floor field — a soft
+      buttercream pale yellow. Paint the horizontal accent band beneath the
+      second-floor windows AND the side accent wall a distinct, contrasting deep
+      forest green, so the house clearly reads as two-tone. Crisp bright-white
+      trim around the windows, eaves, and porch posts, with deep forest-green
+      window sashes matching the band. Preserve everything else exactly as it is:
+      the grey hipped shingle roof and dormer roof, the red-brick chimney, every
+      window and pane of glass, the enclosed front porch and its window band, the
+      concrete entry steps, the white-painted-brick porch foundation, the
+      detached garage at the rear, the neighbor's white house on the right, the
+      concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
+
+  - name: pale-sage
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme. Paint the main body of
+      the wood lap siding — the dormer and the upper second-floor field — a pale
+      sage green. Paint the horizontal accent band beneath the second-floor
+      windows AND the side accent wall a distinct, contrasting deep hunter green,
+      so the house clearly reads as two-tone. Soft cream trim around the windows,
+      eaves, and porch posts, with deep hunter-green window sashes matching the
+      band. Preserve everything else exactly as it is: the grey hipped shingle
+      roof and dormer roof, the red-brick chimney, every window and pane of glass,
+      the enclosed front porch and its window band, the concrete entry steps, the
+      white-painted-brick porch foundation, the detached garage at the rear, the
+      neighbor's white house on the right, the concrete driveway, the front lawn
+      and foundation plantings, the overhead power lines, and the sky. Match the
+      existing daylight, perspective, and shadows. Photorealistic.
+
+  - name: honey-wheat
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme. Paint the main body of
+      the wood lap siding — the dormer and the upper second-floor field — a light
+      honey wheat-gold. Paint the horizontal accent band beneath the second-floor
+      windows AND the side accent wall a distinct, contrasting dark chocolate
+      brown, so the house clearly reads as two-tone. Bright-white trim around the
+      windows, eaves, and porch posts, with dark-brown window sashes matching the
+      band. Preserve everything else exactly as it is: the grey hipped shingle
+      roof and dormer roof, the red-brick chimney, every window and pane of glass,
+      the enclosed front porch and its window band, the concrete entry steps, the
+      white-painted-brick porch foundation, the detached garage at the rear, the
+      neighbor's white house on the right, the concrete driveway, the front lawn
+      and foundation plantings, the overhead power lines, and the sky. Match the
+      existing daylight, perspective, and shadows. Photorealistic.
+
+  - name: celadon
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme. Paint the main body of
+      the wood lap siding — the dormer and the upper second-floor field — a pale
+      celadon, a soft light blue-green. Paint the horizontal accent band beneath
+      the second-floor windows AND the side accent wall a distinct, contrasting
+      deep teal, so the house clearly reads as two-tone. Soft cream trim around
+      the windows, eaves, and porch posts, with dark teal window sashes matching
+      the band. Preserve everything else exactly as it is: the grey hipped shingle
+      roof and dormer roof, the red-brick chimney, every window and pane of glass,
+      the enclosed front porch and its window band, the concrete entry steps, the
+      white-painted-brick porch foundation, the detached garage at the rear, the
+      neighbor's white house on the right, the concrete driveway, the front lawn
+      and foundation plantings, the overhead power lines, and the sky. Match the
+      existing daylight, perspective, and shadows. Photorealistic.

@@ -1,0 +1,53 @@
+# green/cream refinement v2:
+#   - green => soft, muted SAGE (grey-green), not saturated hunter green
+#   - cream => true creamy off-white, NOT buttery yellow
+# Both arrangements (cream-on-top and sage-on-top).
+#
+# Material lock (unchanged): change COLOR only. Cedar shakes stay shakes,
+# brick porch columns + foundation stay brick.
+
+source: IMG_2814.jpeg
+model: max
+
+variations:
+  - name: sage-cream-light-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      true creamy off-white — a soft, milky cream, NOT a buttery yellow. Paint
+      the lower portion (the first-floor walls and the enclosed-porch siding) a
+      soft, muted sage green — a gentle grey-green, not a saturated or dark
+      green — creating a clear two-tone split at the belt line beneath the
+      second-floor windows. Crisp white trim around the windows, eaves, and porch
+      posts, with muted sage-green window sashes. Preserve everything else
+      exactly: the grey hipped shingle roof and dormer roof, the red-brick
+      chimney, every window and pane of glass, the concrete entry steps, the
+      detached garage at the rear, the neighbor's white house on the right, the
+      concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
+
+  - name: sage-cream-dark-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      soft, muted sage green — a gentle grey-green, not a saturated or dark
+      green. Paint the lower portion (the first-floor walls and the
+      enclosed-porch siding) a true creamy off-white — a soft, milky cream, NOT a
+      buttery yellow — creating a clear two-tone split at the belt line beneath
+      the second-floor windows. Crisp white trim around the windows, eaves, and
+      porch posts, with muted sage-green window sashes. Preserve everything else
+      exactly: the grey hipped shingle roof and dormer roof, the red-brick
+      chimney, every window and pane of glass, the concrete entry steps, the
+      detached garage at the rear, the neighbor's white house on the right, the
+      concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.

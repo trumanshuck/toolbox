@@ -1,0 +1,92 @@
+# Two-tone iteration: green/plum and green/cream, exploring arrangement
+# (light-on-top/dark-on-bottom vs. the reverse).
+#
+# IMPORTANT material lock (the previous batch got these wrong):
+#   - Change paint COLORS only. Keep every existing material and texture.
+#   - Cedar-shake shingles up top stay cedar shakes (NOT flat lap siding).
+#   - Brick porch columns and the brick porch foundation stay brick
+#     (NOT wood or smooth siding).
+#
+# The two-tone split runs at the belt line beneath the second-floor windows:
+#   "top"    = the dormer + second-floor field (cedar shakes / lap siding)
+#   "bottom" = the first-floor walls + enclosed-porch siding
+
+source: IMG_2814.jpeg
+model: max
+
+variations:
+  - name: green-plum-light-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      soft sage green. Paint the lower portion (the first-floor walls and the
+      enclosed-porch siding) a deep plum eggplant, creating a clear two-tone
+      split at the belt line beneath the second-floor windows. Cream trim around
+      the windows, eaves, and porch posts, with deep-plum window sashes. Preserve
+      everything else exactly: the grey hipped shingle roof and dormer roof, the
+      red-brick chimney, every window and pane of glass, the concrete entry steps,
+      the detached garage at the rear, the neighbor's white house on the right,
+      the concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
+
+  - name: green-plum-dark-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      deep plum eggplant. Paint the lower portion (the first-floor walls and the
+      enclosed-porch siding) a soft sage green, creating a clear two-tone split at
+      the belt line beneath the second-floor windows. Cream trim around the
+      windows, eaves, and porch posts, with deep-plum window sashes. Preserve
+      everything else exactly: the grey hipped shingle roof and dormer roof, the
+      red-brick chimney, every window and pane of glass, the concrete entry steps,
+      the detached garage at the rear, the neighbor's white house on the right,
+      the concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
+
+  - name: green-cream-light-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      warm cream. Paint the lower portion (the first-floor walls and the
+      enclosed-porch siding) a deep hunter green, creating a clear two-tone split
+      at the belt line beneath the second-floor windows. White trim around the
+      windows, eaves, and porch posts, with hunter-green window sashes. Preserve
+      everything else exactly: the grey hipped shingle roof and dormer roof, the
+      red-brick chimney, every window and pane of glass, the concrete entry steps,
+      the detached garage at the rear, the neighbor's white house on the right,
+      the concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
+
+  - name: green-cream-dark-top
+    prompt: >-
+      Repaint this house in a two-tone craftsman scheme, changing paint COLORS
+      only and keeping every existing material and texture exactly. Keep the
+      cedar-shake shingles on the dormer and upper portion as cedar shakes — do
+      NOT convert them to flat lap siding. Keep the brick porch columns and the
+      brick porch foundation as brick — do NOT convert them to wood or smooth
+      siding. Paint the upper portion (the dormer and the second-floor field) a
+      deep hunter green. Paint the lower portion (the first-floor walls and the
+      enclosed-porch siding) a warm cream, creating a clear two-tone split at the
+      belt line beneath the second-floor windows. White trim around the windows,
+      eaves, and porch posts, with hunter-green window sashes. Preserve everything
+      else exactly: the grey hipped shingle roof and dormer roof, the red-brick
+      chimney, every window and pane of glass, the concrete entry steps, the
+      detached garage at the rear, the neighbor's white house on the right, the
+      concrete driveway, the front lawn and foundation plantings, the overhead
+      power lines, and the sky. Match the existing daylight, perspective, and
+      shadows. Photorealistic.
