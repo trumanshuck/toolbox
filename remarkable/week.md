@@ -1,18 +1,16 @@
-# Week of Aug 24
+# Week of Aug 31
 
 ## Meals
 
-- stir fry
-- BLT+A
-- zucchini couscous
+- beans, chicken and rice
+- spaghetti and meatballs
+- Six Seasons green bean, tuna, mushroom casserole
 
 ## Events
 
-Fri 9:00a — dog grooming
-Thu/Fri — dinner with dad
+Thu — Uncle Jefferson arrives, through the weekend
+Fri–Sun — Grand Con
 
 ## Projects
 
-- repair the sink caulking
-- treat the trumpet vine
-- get rid of the lily of the valley
+- install toilet seats
