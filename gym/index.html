@@ -2,7 +2,7 @@
 <html lang="en" manifest="app.appcache">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Kettlebell">
@@ -29,7 +29,6 @@ button:active { background: #33363b; }
   background: #141619; border-radius: 24px; color: #f4f2ee;
 }
 #clock.long { font-size: 30vmin; }
-#timer.running #clock { background: #12301f; }
 #chime {
   position: absolute; top: 16px; right: 16px; width: 64px; height: 64px; border-radius: 32px;
   font-size: 28px; background: rgba(255, 255, 255, 0.06); opacity: 0.45;
@@ -161,7 +160,6 @@ function tick() {
     $('clock').textContent = text;
     $('clock').className = text.length > 4 ? 'long' : '';
   }
-  $('timer').className = T.running ? 'running' : '';
 }
 
 $('clock').addEventListener('click', function () {
