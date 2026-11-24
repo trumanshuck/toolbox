@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en" manifest="app.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Kettlebell">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Kettlebell</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%; background: #0e0f11; color: #e8e6e1; overflow: hidden;
+  font-family: -apple-system, Helvetica, sans-serif;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+body { display: flex; flex-direction: column; padding: 20px; }
+button {
+  font: inherit; color: inherit; background: #1f2125; border: 0; border-radius: 14px;
+  font-size: 24px; -webkit-appearance: none;
+}
+button:active { background: #33363b; }
+
+#timer { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative; }
+#clock {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 36vmin; font-weight: 200; font-variant-numeric: tabular-nums; line-height: 1;
+  background: #141619; border-radius: 24px; color: #f4f2ee;
+}
+#clock.long { font-size: 30vmin; }
+#clock { transition: transform 0.6s ease-in, color 0.2s; }
+#clock.paused { color: #6f6d68; }
+#clock.pressing { transform: scale(0.95); }
+#chime {
+  position: absolute; top: 16px; right: 16px; width: 64px; height: 64px; border-radius: 32px;
+  font-size: 28px; background: rgba(255, 255, 255, 0.06); opacity: 0.45;
+}
+#chime.on { opacity: 1; }
+
+#bar { display: flex; align-items: stretch; margin-top: 16px; height: 24vh; }
+#bar button { flex: 0 0 120px; border-radius: 18px; color: #c9c6c0; }
+#bar svg { display: block; margin: 0 auto; }
+#step { flex: 1; padding: 10px 16px; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+#cols { display: flex; align-items: center; }
+#ex, #stretch { flex: 1; min-width: 0; }
+#ex { text-align: right; }
+#stretch { text-align: left; }
+#cols.solo #ex { text-align: center; }
+#cols.solo #slash, #cols.solo #stretch { display: none; }
+#slash { flex: 0 0 auto; font-size: 72px; font-weight: 100; color: #3a3d42; padding: 0 18px; line-height: 1; }
+#name { font-size: 28px; font-weight: 600; line-height: 1.15; }
+#note { font-size: 17px; color: #8f8c86; margin-top: 5px; }
+#stretch .what { font-size: 28px; font-weight: 600; color: #a9bcd6; line-height: 1.15; }
+
+#seq { display: flex; justify-content: center; align-items: center; margin-top: 16px; }
+.chip {
+  display: flex; align-items: center; justify-content: center; height: 46px; padding: 0 16px;
+  border-radius: 12px; margin: 0 4px; white-space: nowrap;
+}
+.chip.set { background: #e8e6e1; color: #111214; font-size: 20px; font-weight: 600; min-width: 80px; }
+.chip.set small { font-size: 14px; font-weight: 500; color: #55524d; margin-left: 4px; }
+.chip.str { background: #1c2836; color: #a9bcd6; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<div id="timer">
+  <div id="clock">0:00</div>
+  <button id="chime"></button>
+</div>
+
+<div id="bar">
+  <button id="prev"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M15 4 7 12l8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div id="step">
+    <div id="cols">
+      <div id="ex"><div id="name"></div><div id="note"></div></div>
+      <div id="slash">/</div>
+      <div id="stretch"><div class="what"></div></div>
+    </div>
+    <div id="seq"></div>
+  </div>
+  <button id="next"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</div>
+
+<script>
+var STEPS = [
+  { name: 'Warm-up: Cossack squats', note: 'No weight, slow', sets: 1, reps: '5', per: 'side' },
+  { name: 'Warm-up: get-ups', note: 'Slow', sets: 1, reps: '2–3', per: 'side' },
+  { name: 'Two-handed swings', note: 'About 30 s each', sets: 3, reps: '10',
+    stretch: 'Neck stretch', hold: '30 s / side', order: 'after' },
+  { name: 'Paused goblet squat', note: 'Heels on wedges, 2 s pause at the bottom', sets: 2, reps: '8–12',
+    stretch: 'Left wrist stretch', hold: '30 s up · 30 s down', order: 'around' },
+  { name: 'Half-kneeling overhead press', sets: 2, reps: '8–12', per: 'arm',
+    stretch: 'Straight-knee calf stretch', hold: '30 s / leg', order: 'around' },
+  { name: 'One-arm row', sets: 2, reps: '8–12', per: 'arm',
+    stretch: 'Bent-knee calf stretch', hold: '30 s / leg', order: 'around' },
+  { name: 'Split squat', note: 'Rest up to a minute after each stretch', sets: 2, reps: '8–12', per: 'leg',
+    stretch: 'Doorway stretch', hold: '30 s', order: 'around' },
+  { name: 'Suitcase carry', note: '20 s between', sets: 2, reps: '30 s', per: 'hand' },
+  { name: 'Heel drops off the stair', note: '3 s lowering, 30 s between', sets: 2, reps: '10' }
+];
+
+function $(id) { return document.getElementById(id); }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function fmt(s) { return Math.floor(s / 60) + ':' + pad(s % 60); }
+function today() {
+  var d = new Date();
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+function load() {
+  try {
+    var s = JSON.parse(localStorage.getItem('kb.state'));
+    if (s && s.day === today()) return s;
+  } catch (e) {}
+  return { day: today(), i: 0 };
+}
+function save() { localStorage.setItem('kb.state', JSON.stringify(state)); }
+var chimeOn = localStorage.getItem('kb.chime') !== 'off';
+
+var state = load();
+
+var AC = window.AudioContext || window.webkitAudioContext;
+var audio = null;
+function unlockAudio() {
+  if (audio || !AC) return;
+  audio = new AC();
+  var src = audio.createBufferSource();
+  src.buffer = audio.createBuffer(1, 1, 22050);
+  src.connect(audio.destination);
+  src.start(0);
+}
+document.addEventListener('touchend', unlockAudio);
+document.addEventListener('click', unlockAudio);
+
+function chime(notes) {
+  if (!audio) return;
+  if (audio.state === 'suspended') audio.resume();
+  notes.forEach(function (freq, i) {
+    var t = audio.currentTime + i * 0.12, o = audio.createOscillator(), g = audio.createGain();
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.5, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
+    o.connect(g);
+    g.connect(audio.destination);
+    o.start(t);
+    o.stop(t + 1.2);
+  });
+}
+
+var HOLD_MS = 600;
+var T = { running: false, start: 0, elapsed: 0, lastChime: 0, pressing: false, held: false, holdTimer: 0 };
+
+function elapsed() { return T.running ? Date.now() - T.start : T.elapsed; }
+
+function tick() {
+  var up = Math.floor(elapsed() / 1000);
+  if (T.running) {
+    if (chimeOn && up > 0 && up % 30 === 0 && up !== T.lastChime) chime(up % 60 === 0 ? [1047, 1568] : [1047]);
+    T.lastChime = up;
+  }
+  var text = fmt(up);
+  var cls = (text.length > 4 ? 'long' : '') +
+    (!T.running && T.elapsed > 0 ? ' paused' : '') +
+    (T.pressing ? ' pressing' : '');
+  if ($('clock').textContent !== text) $('clock').textContent = text;
+  if ($('clock').className !== cls) $('clock').className = cls;
+}
+
+function press(e) {
+  e.preventDefault();
+  T.pressing = true;
+  T.held = false;
+  T.holdTimer = setTimeout(function () {
+    T.held = true;
+    T.pressing = false;
+    T.running = false;
+    T.elapsed = 0;
+    T.lastChime = 0;
+    tick();
+  }, HOLD_MS);
+  tick();
+}
+function release(e) {
+  e.preventDefault();
+  clearTimeout(T.holdTimer);
+  var wasHold = T.held || !T.pressing;
+  T.pressing = false;
+  if (!wasHold) {
+    if (T.running) {
+      T.elapsed = Date.now() - T.start;
+      T.running = false;
+    } else {
+      T.start = Date.now() - T.elapsed;
+      T.running = true;
+    }
+  }
+  tick();
+}
+function cancel() {
+  clearTimeout(T.holdTimer);
+  T.pressing = false;
+  tick();
+}
+$('clock').addEventListener('touchstart', press);
+$('clock').addEventListener('touchend', release);
+$('clock').addEventListener('touchcancel', cancel);
+$('clock').addEventListener('mousedown', press);
+$('clock').addEventListener('mouseup', release);
+$('clock').addEventListener('mouseleave', cancel);
+
+function renderChime() {
+  $('chime').textContent = chimeOn ? '🔔' : '🔕';
+  $('chime').className = chimeOn ? 'on' : '';
+}
+$('chime').addEventListener('click', function () {
+  chimeOn = !chimeOn;
+  localStorage.setItem('kb.chime', chimeOn ? 'on' : 'off');
+  renderChime();
+});
+renderChime();
+
+function chip(cls, html) { return '<div class="chip ' + cls + '">' + html + '</div>'; }
+
+function renderStep() {
+  var s = STEPS[state.i];
+  $('name').textContent = s.name;
+  $('note').textContent = s.note || '';
+  $('cols').className = s.stretch ? '' : 'solo';
+  $('stretch').querySelector('.what').textContent = s.stretch || '';
+
+  var set = chip('set', s.reps + (s.per ? '<small>/ ' + s.per + '</small>' : ''));
+  var str = s.stretch ? chip('str', s.hold) : '';
+  var seq = s.order === 'around' ? str : '';
+  for (var k = 0; k < s.sets; k++) {
+    seq += set;
+    if (s.order === 'after' || (s.order === 'around')) seq += str;
+  }
+  $('seq').innerHTML = seq;
+
+}
+
+$('prev').addEventListener('click', function () {
+  state.i = (state.i + STEPS.length - 1) % STEPS.length;
+  save();
+  renderStep();
+});
+$('next').addEventListener('click', function () {
+  state.i = (state.i + 1) % STEPS.length;
+  save();
+  renderStep();
+});
+
+renderStep();
+tick();
+setInterval(tick, 100);
+</script>
+</body>
+</html>
