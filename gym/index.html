@@ -29,6 +29,9 @@ button:active { background: #33363b; }
   background: #141619; border-radius: 24px; color: #f4f2ee;
 }
 #clock.long { font-size: 30vmin; }
+#clock { transition: transform 0.6s ease-in, color 0.2s; }
+#clock.paused { color: #6f6d68; }
+#clock.pressing { transform: scale(0.95); }
 #chime {
   position: absolute; top: 16px; right: 16px; width: 64px; height: 64px; border-radius: 32px;
   font-size: 28px; background: rgba(255, 255, 255, 0.06); opacity: 0.45;
@@ -146,28 +149,66 @@ function chime() {
   });
 }
 
-var T = { running: false, start: 0, lastChime: 0 };
+var HOLD_MS = 600;
+var T = { running: false, start: 0, elapsed: 0, lastChime: 0, pressing: false, held: false, holdTimer: 0 };
+
+function elapsed() { return T.running ? Date.now() - T.start : T.elapsed; }
 
 function tick() {
-  var text = '0:00';
+  var up = Math.floor(elapsed() / 1000);
   if (T.running) {
-    var up = Math.floor((Date.now() - T.start) / 1000);
     if (chimeOn && up > 0 && up % 30 === 0 && up !== T.lastChime) chime();
     T.lastChime = up;
-    text = fmt(up);
   }
-  if ($('clock').textContent !== text) {
-    $('clock').textContent = text;
-    $('clock').className = text.length > 4 ? 'long' : '';
-  }
+  var text = fmt(up);
+  var cls = (text.length > 4 ? 'long' : '') +
+    (!T.running && T.elapsed > 0 ? ' paused' : '') +
+    (T.pressing ? ' pressing' : '');
+  if ($('clock').textContent !== text) $('clock').textContent = text;
+  if ($('clock').className !== cls) $('clock').className = cls;
 }
 
-$('clock').addEventListener('click', function () {
-  T.running = !T.running;
-  T.start = Date.now();
-  T.lastChime = 0;
+function press(e) {
+  e.preventDefault();
+  T.pressing = true;
+  T.held = false;
+  T.holdTimer = setTimeout(function () {
+    T.held = true;
+    T.pressing = false;
+    T.running = false;
+    T.elapsed = 0;
+    T.lastChime = 0;
+    tick();
+  }, HOLD_MS);
   tick();
-});
+}
+function release(e) {
+  e.preventDefault();
+  clearTimeout(T.holdTimer);
+  var wasHold = T.held || !T.pressing;
+  T.pressing = false;
+  if (!wasHold) {
+    if (T.running) {
+      T.elapsed = Date.now() - T.start;
+      T.running = false;
+    } else {
+      T.start = Date.now() - T.elapsed;
+      T.running = true;
+    }
+  }
+  tick();
+}
+function cancel() {
+  clearTimeout(T.holdTimer);
+  T.pressing = false;
+  tick();
+}
+$('clock').addEventListener('touchstart', press);
+$('clock').addEventListener('touchend', release);
+$('clock').addEventListener('touchcancel', cancel);
+$('clock').addEventListener('mousedown', press);
+$('clock').addEventListener('mouseup', release);
+$('clock').addEventListener('mouseleave', cancel);
 
 function renderChime() {
   $('chime').textContent = chimeOn ? '🔔' : '🔕';
