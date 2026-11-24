@@ -6,6 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Kettlebell">
+<link rel="apple-touch-icon" href="icon.png">
 <title>Kettlebell</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -133,10 +134,10 @@ function unlockAudio() {
 document.addEventListener('touchend', unlockAudio);
 document.addEventListener('click', unlockAudio);
 
-function chime() {
+function chime(notes) {
   if (!audio) return;
   if (audio.state === 'suspended') audio.resume();
-  [1047, 1568].forEach(function (freq, i) {
+  notes.forEach(function (freq, i) {
     var t = audio.currentTime + i * 0.12, o = audio.createOscillator(), g = audio.createGain();
     o.frequency.value = freq;
     g.gain.setValueAtTime(0.0001, t);
@@ -157,7 +158,7 @@ function elapsed() { return T.running ? Date.now() - T.start : T.elapsed; }
 function tick() {
   var up = Math.floor(elapsed() / 1000);
   if (T.running) {
-    if (chimeOn && up > 0 && up % 30 === 0 && up !== T.lastChime) chime();
+    if (chimeOn && up > 0 && up % 30 === 0 && up !== T.lastChime) chime(up % 60 === 0 ? [1047, 1568] : [1047]);
     T.lastChime = up;
   }
   var text = fmt(up);
